@@ -3,7 +3,7 @@ import { Statistic, Row, Col, Icon, Divider } from 'antd';
 
 class ProjectDetails extends Component {
   render() {
-    const { projectDetails } = this.props;
+    const { projectDetails, contributors } = this.props;
 
     return(
       <div className="project-details">
@@ -18,7 +18,15 @@ class ProjectDetails extends Component {
         <Divider dashed />
 
         <Row>
-          <Col span={8}>
+          <Col span={6}>
+            <Statistic
+              title="Contributors"
+              value={contributors.length}
+              prefix={<Icon type="smile" />}
+            />
+          </Col>
+
+          <Col span={6}>
             <Statistic
               title="Watchers"
               value={projectDetails.watchers_count}
@@ -26,7 +34,7 @@ class ProjectDetails extends Component {
             />
           </Col>
 
-          <Col span={8}>
+          <Col span={6}>
             <Statistic
               title="Forks"
               value={projectDetails.forks_count}
@@ -34,7 +42,7 @@ class ProjectDetails extends Component {
             />
           </Col>
 
-          <Col span={8}>
+          <Col span={6}>
             <Statistic
               title="Open Issues"
               value={projectDetails.open_issues_count}

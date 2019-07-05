@@ -119,6 +119,7 @@ class ContentComponent extends Component {
               <React.Fragment>
                 <ProjectDetails
                   projectDetails={projectDetails}
+                  contributors={contributors}
                 />
 
                 <Divider />
