@@ -1,0 +1,13 @@
+.contributors {
+
+}
+
+.contributors-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .contributor {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,14 @@
+// Menu Item
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.project-name,
+.project-watchers {
+  display: block;
+}
+
+.project-watchers {
+  width: 30%;
+}
