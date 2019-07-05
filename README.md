@@ -4,7 +4,7 @@ List of projects / repositories owned by Facebook on Github.
 ## Build
 npm run build
 
-## Start
+## Start the server
 npm start
 
 ## Run on dev
