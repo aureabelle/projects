@@ -17,11 +17,14 @@ class Contributors extends Component {
               return (
                 <div className="contributor" key={`contributor-${index}`}>
                   <Card
-                    hoverable
                     style={{ width: 240 }}
-                    cover={<img alt={contributor.login} src={contributor.avatar_url} />}
+                    cover={<img alt={contributor.login}
+                    src={contributor.avatar_url} />}
                   >
-                    <Meta title={contributor.login} description={contributor.html_url} />
+                    <Meta
+                      title={contributor.login}
+                      description={contributor.html_url}
+                    />
                   </Card>
                 </div>
               );
