@@ -42,16 +42,23 @@ class Languages extends Component {
         }]
       }
 
-      return (
-        <div className="languages">
+      if (Object.entries(languages).length !== 0 && languages.constructor === Object) {
+        return (
+          <div className="languages">
 
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={options}
-          />
+            <HighchartsReact
+              highcharts={Highcharts}
+              options={options}
+            />
+          </div>
+        );
+      }
+
+      return (
+        <div className="contributors">
+          <p>This project has no languages.</p>
         </div>
       );
-
     }
 
     return (
