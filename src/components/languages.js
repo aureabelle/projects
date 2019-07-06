@@ -28,6 +28,9 @@ class Languages extends Component {
         title: {
             text: 'Languages'
         },
+        credits: {
+            enabled: false
+        },
         xAxis: {
             categories: categories
         },
