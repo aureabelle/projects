@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const FETCH_PROJECTS = "FETCH_PROJECTS";
 export const FETCH_CONTRIBUTORS = "FETCH_CONTRIBUTORS";
+export const FETCH_LANGUAGES = "FETCH_LANGUAGES";
 
 export function fetchProjects() {
   const url = 'https://api.github.com/orgs/facebook/repos?per_page=500';
@@ -30,6 +31,18 @@ export function fetchContributors(url) {
   };
 }
 
+export function fetchLanguages(url) {
+  const request = axios.get(url, {
+      headers: {
+        "Accept": "application/vnd.github.inertia-preview+json"
+      }
+    });
+
+  return {
+    type: FETCH_LANGUAGES,
+    payload: request
+  };
+}
 
 
 // With Token and Authorization

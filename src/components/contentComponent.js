@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from "react-redux";
-import { fetchProjects, fetchContributors } from "../actions/index";
+import { fetchProjects, fetchContributors, fetchLanguages } from "../actions/index";
 
 import {
   Layout,
@@ -18,6 +18,7 @@ const { Option } = Select;
 import MenuComponent from './menuComponent';
 import Contributors from './contributors';
 import ProjectDetails from './projectDetails';
+import Languages from './languages';
 
 import '../scss/menu.scss';
 
@@ -43,7 +44,9 @@ class ContentComponent extends Component {
 
   handleMenuClick(item) {
     const contributorsUrl = item.contributors_url;
+    const languagesUrl = item.languages_url;
     this.props.dispatch(fetchContributors(contributorsUrl));
+    this.props.dispatch(fetchLanguages(languagesUrl));
 
     this.setState({
       projectDetails: item,
@@ -98,6 +101,7 @@ class ContentComponent extends Component {
       }
 
       const contributors = this.props.contributors;
+      const languages = this.props.languages;
 
       return (
         <Content style={{ padding: '50px' }}>
@@ -118,6 +122,7 @@ class ContentComponent extends Component {
                 placeholder="Sort projects"
                 onChange={this.handleSort}
               >
+                <Option value="">Sort by</Option>
                 <Option value="descending"><Icon type="eye" /> Highest Watchers</Option>
                 <Option value="ascending"><Icon type="eye" /> Lowest Watchers</Option>
                 <Option value="alphabetical"><Icon type="sort-ascending" /> Alphabetical</Option>
@@ -136,6 +141,12 @@ class ContentComponent extends Component {
                   <ProjectDetails
                     projectDetails={projectDetails}
                     contributors={contributors}
+                  />
+
+                  <Divider />
+
+                  <Languages
+                    languages={languages}
                   />
 
                   <Divider />
@@ -169,7 +180,8 @@ class ContentComponent extends Component {
 const mapStateToProps = (state) => {
   return {
     projects: state.projects[0],
-    contributors: state.contributors[0]
+    contributors: state.contributors[0],
+    languages: state.languages[0]
   }
 }
 
