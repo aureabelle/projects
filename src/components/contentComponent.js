@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+
+import { connect } from "react-redux";
+import { fetchProjects, fetchContributors } from "../actions/index";
+
 import {
   Layout,
-  // Menu,
   Icon,
   Divider,
   Empty,
@@ -21,8 +24,6 @@ class ContentComponent extends Component {
     super(props);
 
     this.state = {
-      projects: [],
-      contributors: [],
       projectDetails: {},
       hasSelected: false,
       keyword: ''
@@ -30,48 +31,16 @@ class ContentComponent extends Component {
 
     this.handleMenuClick = this.handleMenuClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.getContributors = this.getContributors.bind(this);
   }
 
   componentDidMount() {
-    fetch('https://api.github.com/orgs/facebook/repos?per_page=500', {
-      headers: {
-        "Accept": "application/vnd.github.inertia-preview+json"
-      }
-    })
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          projects: result
-        });
-      }, error => {
-        console.log(error);
-        this.setState({
-          error
-        });
-      });
-  }
-
-  getContributors(url) {
-    fetch(url, {
-      headers: {
-        "Accept": "application/vnd.github.inertia-preview+json"
-      }
-    })
-      .then(response => response.json())
-      .then(result => {
-        this.setState({
-          contributors: result
-        });
-      }, error => {
-        console.log(error);
-      });
-
+    this.props.dispatch(fetchProjects());
   }
 
   handleMenuClick(item) {
     const contributorsUrl = item.contributors_url;
-    this.getContributors(contributorsUrl);
+    this.props.dispatch(fetchContributors(contributorsUrl));
+
     this.setState({
       projectDetails: item,
       hasSelected: true
@@ -86,58 +55,75 @@ class ContentComponent extends Component {
 
   render() {
     const {
-      projects,
-      contributors,
       projectDetails,
       hasSelected,
       keyword
     } = this.state;
 
-    const menuItems = projects.sort((a, b) => b.watchers - a.watchers).filter(item => item.name.includes(keyword));
+    if (this.props.projects) {
+      const projects = this.props.projects;
+
+      const menuItems = projects.sort((a, b) => b.watchers - a.watchers).filter(item => item.name.includes(keyword));
+
+      const contributors = this.props.contributors;
+
+      return (
+        <Content style={{ padding: '50px' }}>
+          <Layout style={{ background: '#fff', padding: '25px' }}>
+            <Sider width={350} style={{ background: '#fff' }}>
+              <Input
+                placeholder="Enter a keyword"
+                prefix={<Icon type="project" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                suffix={<Icon type="search" />}
+                onChange={this.handleSearch}
+              />
+
+              <Divider />
+
+              <MenuComponent
+                menuItems={menuItems}
+                handleMenuClick={this.handleMenuClick}
+              />
+            </Sider>
+
+            <Content style={{ padding: '25px', minHeight: 280 }}>
+              {hasSelected ?
+                <React.Fragment>
+                  <ProjectDetails
+                    projectDetails={projectDetails}
+                    contributors={contributors}
+                  />
+
+                  <Divider />
+
+                  <Contributors
+                    contributors={contributors}
+                  />
+                </React.Fragment>
+              :
+                <React.Fragment>
+                  <Empty style={{ minHeight: 300 }} description="Select a project on the left." />
+                </React.Fragment>
+              }
+            </Content>
+          </Layout>
+        </Content>
+      );
+
+    }
 
     return (
-      <Content style={{ padding: '50px' }}>
-        <Layout style={{ background: '#fff', padding: '25px' }}>
-          <Sider width={350} style={{ background: '#fff' }}>
-            <Input
-              placeholder="Enter a keyword"
-              prefix={<Icon type="project" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              suffix={<Icon type="search" />}
-              onChange={this.handleSearch}
-            />
-
-            <Divider />
-
-            <MenuComponent
-              menuItems={menuItems}
-              handleMenuClick={this.handleMenuClick}
-            />
-          </Sider>
-
-          <Content style={{ padding: '25px', minHeight: 280 }}>
-            {hasSelected ?
-              <React.Fragment>
-                <ProjectDetails
-                  projectDetails={projectDetails}
-                  contributors={contributors}
-                />
-
-                <Divider />
-
-                <Contributors
-                  contributors={contributors}
-                />
-              </React.Fragment>
-            :
-              <React.Fragment>
-                <Empty style={{ minHeight: 300 }} description="Select a project on the left." />
-              </React.Fragment>
-            }
-          </Content>
-        </Layout>
-      </Content>
+      <div>Loading ...</div>
     );
+
   }
 }
 
-export default ContentComponent;
+const mapStateToProps = (state) => {
+  return {
+    projects: state.projects[0],
+    contributors: state.contributors[0]
+  }
+}
+
+export default connect(mapStateToProps)(ContentComponent);

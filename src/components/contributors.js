@@ -8,31 +8,32 @@ class Contributors extends Component {
   render() {
     const { contributors } = this.props;
 
-    if (contributors.length !== 0) {
-      return (
-        <div className="contributors">
-          <h3>Contributors</h3>
-          <div className="contributors-list">
-            {contributors.map((contributor, index) => {
-              return (
-                <div className="contributor" key={`contributor-${index}`}>
-                  <Card
-                    style={{ width: 240 }}
-                    cover={<img alt={contributor.login}
-                    src={contributor.avatar_url} />}
-                  >
-                    <Meta
-                      title={contributor.login}
-                      description={contributor.html_url}
-                    />
-                  </Card>
-                </div>
-              );
-            })}
+      if (contributors) {
+        return (
+          <div className="contributors">
+            <h3>Contributors</h3>
+
+            <div className="contributors-list">
+              {contributors.map((contributor, index) => {
+                return (
+                  <div className="contributor" key={`contributor-${index}`}>
+                    <Card
+                      style={{ width: 240 }}
+                      cover={<img alt={contributor.login}
+                      src={contributor.avatar_url} />}
+                    >
+                      <Meta
+                        title={contributor.login}
+                        description={contributor.html_url}
+                      />
+                    </Card>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      );
-    }
+        );
+      }
 
     return (
       <div className="contributors">

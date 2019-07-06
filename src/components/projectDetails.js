@@ -21,7 +21,7 @@ class ProjectDetails extends Component {
           <Col span={6}>
             <Statistic
               title="Contributors"
-              value={contributors.length}
+              value={contributors ? contributors.length : 0}
               prefix={<Icon type="smile" />}
             />
           </Col>
