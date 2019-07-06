@@ -12,4 +12,4 @@ npm run dev
 
 List Facebook projects sorted by watchers. Clicking on one of the projects will fetch the project data and populate the main view with its details.
 
-A search feature is also added for easy search.
+Search and sorting features are also added for easy search.

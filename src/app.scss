@@ -4,3 +4,13 @@
     color: #fff;
   }
 }
+
+// Loading
+.loading {
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+}

@@ -8,10 +8,12 @@ import {
   Icon,
   Divider,
   Empty,
-  Input
+  Input,
+  Select
 } from 'antd';
 
 const { Content, Sider } = Layout;
+const { Option } = Select;
 
 import MenuComponent from './menuComponent';
 import Contributors from './contributors';
@@ -26,11 +28,13 @@ class ContentComponent extends Component {
     this.state = {
       projectDetails: {},
       hasSelected: false,
-      keyword: ''
+      keyword: '',
+      sortBy: 'descending'
     };
 
     this.handleMenuClick = this.handleMenuClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSort = this.handleSort.bind(this);
   }
 
   componentDidMount() {
@@ -53,17 +57,45 @@ class ContentComponent extends Component {
     });
   }
 
+  handleSort(value) {
+    if (value === 'ascending') {
+      this.setState({
+        sortBy: 'ascending'
+      });
+    } else if (value === 'descending') {
+      this.setState({
+        sortBy: 'descending'
+      });
+    } else {
+      this.setState({
+        sortBy: 'alphabetical'
+      });
+    }
+  }
+
   render() {
     const {
       projectDetails,
       hasSelected,
-      keyword
+      keyword,
+      sortBy
     } = this.state;
 
     if (this.props.projects) {
       const projects = this.props.projects;
+      let menuItems = [];
 
-      const menuItems = projects.sort((a, b) => b.watchers - a.watchers).filter(item => item.name.includes(keyword));
+      if (sortBy === 'ascending') {
+        menuItems = projects.sort((a, b) => a.watchers - b.watchers).filter(item => item.name.includes(keyword));
+      } else if (sortBy === 'descending') {
+        menuItems = projects.sort((a, b) => b.watchers - a.watchers).filter(item => item.name.includes(keyword));
+      } else {
+        menuItems = projects.sort((a, b) => {
+          if(a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
+          if(a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
+          return 0;
+        }).filter(item => item.name.includes(keyword));
+      }
 
       const contributors = this.props.contributors;
 
@@ -79,6 +111,18 @@ class ContentComponent extends Component {
               />
 
               <Divider />
+
+              <Select
+                style={{ marginBottom: '20px', width: '100%' }}
+                defaultValue={sortBy}
+                placeholder="Sort projects"
+                onChange={this.handleSort}
+              >
+                <Option value="descending"><Icon type="eye" /> Highest Watchers</Option>
+                <Option value="ascending"><Icon type="eye" /> Lowest Watchers</Option>
+                <Option value="alphabetical"><Icon type="sort-ascending" /> Alphabetical</Option>
+              </Select>
+
 
               <MenuComponent
                 menuItems={menuItems}
@@ -113,7 +157,10 @@ class ContentComponent extends Component {
     }
 
     return (
-      <div>Loading ...</div>
+      <div className="loading">
+        <Icon type="loading" />
+        <span>Loading ...</span>
+      </div>
     );
 
   }
