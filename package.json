@@ -13,7 +13,7 @@
   "dependencies": {
     "@babel/node": "^7.4.5",
     "antd": "^3.18.2",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "node-fetch": "^2.6.0",
     "path": "^0.12.7"
   },
